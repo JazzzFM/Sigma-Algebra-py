@@ -1,4 +1,4 @@
-import math; 
+import math 
 
 def Union(lst1, lst2): 
     final_list = list(set(lst1) | set(lst2)) 
