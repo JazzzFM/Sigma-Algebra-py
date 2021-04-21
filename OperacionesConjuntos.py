@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 import math 
+import copy
  
 def Union(lista_1, lista_2):
     resultado = []
@@ -18,7 +19,7 @@ def Intersec(lista_1, lista_2):
     return list(resultado)
 
 def Menos(lista_1, lista_2):
-    resultado = lista_1
+    resultado = copy.copy(lista_1)
     for i in lista_1:
         if i in lista_2:
             resultado.remove(i)
@@ -43,25 +44,43 @@ def Vacio_Esta_En(lista):
         return True
     else:
         return False
+    
+def Obtener_Complemento(lista, lista_elemento):
+    for elemento in lista_elemento:
+        if elemento in lista:
+            return Menos(lista, lista_elemento)
+    else:
+        print("Obtine una lista vacía")
+        return [[]]
+
+def Criterio_Complemento(lista):
+    complementos = []
+    aux = []
+        
+    for i in range(0, len(lista)):
+        aux.append([lista[i]])
+    
+    for a in aux:
+        complementos.append(Obtener_Complemento(lista, a))
+    
+    P = Potencia_De(lista)
+    verdades = [True for i in range(0, len(complementos)) if complementos[i] in P]
+    return any(verdades)
 
 def Es_SigmaAlgebra(lista):
     if not Vacio_Esta_En(lista):
         print("No es sigma-álgebra")
         return False
     else:
-        verdades = []
-        for elemento in lista:
-            elemento_lista = list(elemento)
-            complemento = Menos(lista, elemento_lista)
-            if complemento in lista:
-                print("revisando si el elemento esta en la lista")
-                verdades.append(True)
-            else:
-                verdades.append(False)
-    return any(verdades)
+        if Criterio_Complemento(lista):       
+            return True
+        else:
+            False
+    
     
 if __name__== '__main__': 
-    lista_2 = [[],['a'], ['b'], ['a', 'b'], ['c'], ['a', 'c'], ['b', 'c'], ['a', 'b', 'c']];
-    x = Es_SigmaAlgebra(lista_2)
-    print(x)
+    lista = [[],['a'], ['b'], ['a', 'b'], ['c'], ['a', 'c'], ['b', 'c'], ['a', 'b', 'c']];
+    x = Es_SigmaAlgebra(lista)
+    print(x) 
+
     
