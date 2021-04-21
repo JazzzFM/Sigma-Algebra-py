@@ -46,44 +46,49 @@ def Vacio_Esta_En(lista):
         return False
     
 def Obtener_Complemento(lista, lista_elemento):
-    for elemento in lista_elemento:
-        if elemento in lista:
-            return Menos(lista, lista_elemento)
+    if len(lista_elemento) == 0:
+        return lista
     else:
-        print("Obtine una lista vacía")
-        return [[]]
+        return Menos(lista, lista_elemento)
 
 def Criterio_Complemento(lista):
     complementos = []
-    aux = []
-        
+    aux = [] 
+    
     for i in range(0, len(lista)):
-        aux.append([lista[i]])
+        aux.append(lista[i])
+    
+    Conjunto = max(lista, key = lambda i: len(i))
     
     for a in aux:
-        complementos.append(Obtener_Complemento(lista, a))
+        complementos.append(Obtener_Complemento(Conjunto, a))            
+    verdades = []
+
+    for i in range(0, len(complementos)):
+        if complementos[i] in lista:
+            verdades.append(True)
+        else:
+            verdades.append(False)
     
-    P = Potencia_De(lista)
-    verdades = [True for i in range(0, len(complementos)) if complementos[i] in P]
-    return any(verdades)
+    return all(verdades)
 
 def Criterio_Union(lista):
     pass
 
 def Es_SigmaAlgebra(lista):
     if not Vacio_Esta_En(lista):
-        print("No es sigma-álgebra")
+        print("No es sigma-álgebra, pues el vacío no está en en la familia. \n")
         return False
     else:
-        if Criterio_Complemento(lista):       
-            return True
-        else:
-            False
+        return Criterio_Complemento(lista)      
+        
+        #else:
+        #   print("No es sigma-álgebra, pues no cumple el criterio de que cada elemento de la familia, se complemento está en la familia. \n")
+        #    False
     
     
 if __name__== '__main__': 
-    lista = [[],['a'], ['b'], ['a', 'b'], ['c'], ['a', 'c'], ['b', 'c'], ['a', 'b', 'c']];
+    lista = [[],['a'],['b'], ['a', 'b'], ['c'], ['a', 'c'], ['b', 'c'], ['a', 'b', 'c']];
     x = Es_SigmaAlgebra(lista)
     print(x) 
-
     
