@@ -67,6 +67,9 @@ def Criterio_Complemento(lista):
     verdades = [True for i in range(0, len(complementos)) if complementos[i] in P]
     return any(verdades)
 
+def Criterio_Union(lista):
+    pass
+
 def Es_SigmaAlgebra(lista):
     if not Vacio_Esta_En(lista):
         print("No es sigma-álgebra")
