@@ -8,4 +8,4 @@ escribir una función quedetermine si la lista dada de conjuntos es una sigma á
 Construir todas las álgebras sobre el conjunto {0,1,...,n-1} donde n es un número
 dado pequeño. 
 
-Equipo:Jaziel Flores, Samantha Ponce, Aldo Ruano, Jes ́us Galindo
+Equipo: Jaziel Flores, Samantha Ponce, Aldo Ruano, Jesús Galindo

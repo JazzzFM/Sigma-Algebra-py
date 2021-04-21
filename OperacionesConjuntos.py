@@ -1,40 +1,67 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 import math 
+ 
+def Union(lista_1, lista_2):
+    resultado = []
+    resultado.extend(lista_1 + lista_2)
+    for i in resultado:
+        if resultado.count(i) > 1:
+            resultado.remove(i)
+    return list(resultado)
 
-def Union(lst1, lst2): 
-    final_list = list(set(lst1) | set(lst2)) 
-    return final_list 
+def Intersec(lista_1, lista_2):
+    resultado = []
+    for i in lista_1:
+        if i in lista_2:
+            resultado.append(i)
+    return list(resultado)
 
-def Intersec(lst1, lst2):
-    final_list = list(set(lst1) & set(lst2))
-    return final_list
+def Menos(lista_1, lista_2):
+    resultado = lista_1
+    for i in lista_1:
+        if i in lista_2:
+            resultado.remove(i)
+    return list(resultado)
 
-def Less(lst1, lst2):
-    aux = set(list(lst1) + list(lst2))
-    final_list = aux - set(list(lst2))
-    return list(final_list)
-  
-def printPowerSet(set, set_size):   
-    pow_set_size = (int) (math.pow(2, set_size)); 
-    counter = 0; 
-    j = 0; 
-      
-    for counter in range(0, pow_set_size): 
-        for j in range(0, set_size): 
-            if((counter & (1 << j)) > 0): 
-                print(set[j], end = ""); 
-        print(""); 
-  
+def Dif_Simetric(lista_1, lista_2):
+    resultado = []
+    resultado_1 = Menos(lista_1, lista_2)
+    resultado_2 = Menos(lista_2, lista_1)
+    resultado = Union(resultado_1, resultado_2)
+    return resultado
 
-if __name__== '__main__':
-    a = [1, 2, 3]
-    b = [3,4, 5]
-    c = Union(a, b)
-    d = Intersec(a, b)
-    e = Less(a, b)
+def Potencia_De(lista):
+    resultado = [[]]
+    for x in lista:
+        resultado.extend([subset + [x] for subset in resultado])
+    return resultado
 
-    set = ['a', 'b', 'c']; 
-    printPowerSet(set, 3); 
+def Vacio_Esta_En(lista):
+    x = [True for i in lista if len(i) == 0]
+    if any(x):
+        return True
+    else:
+        return False
 
-    print(c)
-    print(d)
-    print(e)
+def Es_SigmaAlgebra(lista):
+    if not Vacio_Esta_En(lista):
+        print("No es sigma-álgebra")
+        return False
+    else:
+        verdades = []
+        for elemento in lista:
+            elemento_lista = list(elemento)
+            complemento = Menos(lista, elemento_lista)
+            if complemento in lista:
+                print("revisando si el elemento esta en la lista")
+                verdades.append(True)
+            else:
+                verdades.append(False)
+    return any(verdades)
+    
+if __name__== '__main__': 
+    lista_2 = [[],['a'], ['b'], ['a', 'b'], ['c'], ['a', 'c'], ['b', 'c'], ['a', 'b', 'c']];
+    x = Es_SigmaAlgebra(lista_2)
+    print(x)
+    
