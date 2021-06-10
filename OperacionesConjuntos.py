@@ -3,12 +3,16 @@
 import math 
 import copy
  
+#######################################
+# Operaciones con conjuntos
+
 def Union(lista_1, lista_2):
-    resultado = []
-    resultado.extend(lista_1 + lista_2)
-    for i in resultado:
-        if resultado.count(i) > 1:
-            resultado.remove(i)
+    resultado = copy.copy(lista_1)
+    for j in lista_2:
+            if j in lista_1:
+                None
+            else:
+                resultado.append(j) 
     return list(resultado)
 
 def Intersec(lista_1, lista_2):
@@ -19,10 +23,12 @@ def Intersec(lista_1, lista_2):
     return list(resultado)
 
 def Menos(lista_1, lista_2):
-    resultado = copy.copy(lista_1)
+    resultado = []
     for i in lista_1:
         if i in lista_2:
-            resultado.remove(i)
+           None
+        else:
+            resultado.append(i)   
     return list(resultado)
 
 def Dif_Simetric(lista_1, lista_2):
@@ -38,35 +44,51 @@ def Potencia_De(lista):
         resultado.extend([subset + [x] for subset in resultado])
     return resultado
 
-def Vacio_Esta_En(lista):
-    x = [True for i in lista if len(i) == 0]
-    if any(x):
-        return True
-    else:
-        return False
-    
+
 def Obtener_Complemento(lista, lista_elemento):
     if len(lista_elemento) == 0:
         return lista
     else:
         return Menos(lista, lista_elemento)
 
+def Tienen_Mismos_Elementos(lista_1, lista_2):
+    return set(lista_1) == set(lista_2) and len(lista_1) == len(lista_2)
+
+def Esta_En(lista_1, lista_2):
+    verdades = []
+    for elemento in lista_2:
+        if lista_1 == elemento or Tienen_Mismos_Elementos(lista_1, elemento):
+            verdades.append(True)
+        else:
+            verdades.append(False)
+    return any(verdades)
+
+#############################################
+# Criterios para sigma-álgebra
+
+def Vacio_Esta_En(lista):
+    x = [True for elemento in lista if len(elemento) == 0]
+    return any(x)
+
 def Criterio_Complemento(lista):
     complementos = []
     aux = [] 
     for i in range(0, len(lista)):
         aux.append(lista[i])
-    Conjunto = max(lista, key = lambda i: len(i))
+
+    Total = max(lista, key = lambda i: len(i))
+    
     for a in aux:
-        complementos.append(Obtener_Complemento(Conjunto, a))            
+        complementos.append(Obtener_Complemento(Total, a))            
     verdades = []
+    
     for i in range(0, len(complementos)):
-        if complementos[i] in lista:
+        if Esta_En(complementos[i], lista):
             verdades.append(True)
         else:
             verdades.append(False)
     return all(verdades)
-
+        
 def Criterio_Union(lista):
     uniones = []
     for i in range(0, len(lista)):
@@ -77,14 +99,10 @@ def Criterio_Union(lista):
             uniones.append(aux)
     verdades = []
     for i in range(0, len(uniones)):
-        print(uniones[i])
-        if uniones[i] in lista:
-            print(True)
+        if Esta_En(uniones[i], lista):
             verdades.append(True)
         else:
-            print(False)
             verdades.append(False)
-    print(verdades)
     return all(verdades)
 
 def Es_SigmaAlgebra(lista):
@@ -101,9 +119,10 @@ def Es_SigmaAlgebra(lista):
                 print("No es sigma-álgebra, pues no cumple el criterio de que cada colección finita de la familia, su unión está en la familia. \n")
             return False
     
+########################################
+# Test 
 if __name__== '__main__': 
-    lista = [[],['a'],['b'], ['a', 'b'], ['c'], ['a', 'c'], ['b', 'c'], ['a', 'b', 'c']];
-    #x = Es_SigmaAlgebra(lista)
+    lista = [[],['a'],['b'],['c'], ['a', 'b'], ['a', 'c'], ['b', 'c'], ['a', 'b', 'c']];
     y = Es_SigmaAlgebra(lista)
-    print(y) 
+    print(y)  
     
