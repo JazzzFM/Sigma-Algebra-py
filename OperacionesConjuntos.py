@@ -118,11 +118,27 @@ def Es_SigmaAlgebra(lista):
             if not Criterio_Union(lista):
                 print("No es sigma-álgebra, pues no cumple el criterio de que cada colección finita de la familia, su unión está en la familia. \n")
             return False
+        
+###################################
+#  Construir todas las álgebras sobre el conjunto {0,1,...,n-1} donde n es un número dado pequeño.
+
+def Construir_SigmaAlgebras(n):
+    SigmaAlgebras = []
+    conjunto_inicial = [i for i in range(0, n)]
+    Potencia = Potencia_De(conjunto_inicial)
+    Potencia_De_Potencia = Potencia_De(Potencia)      
     
-########################################
-# Test 
-if __name__== '__main__': 
-    lista = [[],['a'],['b'],['c'], ['a', 'b'], ['a', 'c'], ['b', 'c'], ['a', 'b', 'c']];
-    y = Es_SigmaAlgebra(lista)
-    print(y)  
+    
+    for lista in Potencia_De_Potencia:
+        if Es_SigmaAlgebra(lista):
+            SigmaAlgebras.append(lista)
+        else:
+            None
+    
+    for sigma in SigmaAlgebras:
+        print(sigma)
+        print("\n")
+        
+    return SigmaAlgebras
+
     
