@@ -2,6 +2,8 @@
 # -*- coding: UTF-8 -*-
 import math 
 import copy
+from tqdm import tqdm
+import time
  
 # Operaciones con conjuntos
 
@@ -109,13 +111,21 @@ def Es_SigmaAlgebra(lista, n):
 def Construir_SigmaAlgebras(n):
     conjunto_inicial = list(range(n))
     Potencia = Potencia_De(conjunto_inicial)
-    Potencia_De_Potencia = Potencia_De(Potencia)      
-    SigmaAlgebras = [j for j in Potencia_De_Potencia if Es_SigmaAlgebra(j, n) ]
+    Potencia_De_Potencia = Potencia_De(Potencia) 
+    SigmaAlgebras = []
+    #SigmaAlgebras = [j for j in Potencia_De_Potencia if Es_SigmaAlgebra(j, n) ]
+
+    for i in tqdm(range(0, len(Potencia_De_Potencia)), desc="Ejecutando…", ascii=False, ncols=75):
+        if Es_SigmaAlgebra(Potencia_De_Potencia[i], n):
+            SigmaAlgebras.append(Potencia_De_Potencia[i])
     
-    for sigma in SigmaAlgebras:
-        print(sigma)
-        print("\n")
-        
+    print("Completo. \n")    
+    
+    for i in tqdm(range(0, len(SigmaAlgebras)), desc="Ejecutando…", ascii=False, ncols=75):
+        print(SigmaAlgebras[i])    
+            
+    print("Completo. \n") 
+       
     print("El numero de sigma algebras son: ")
     print(len(SigmaAlgebras))
     print("Cantidadd de elementos en el conjunto potencia del conjunto potencia:")
