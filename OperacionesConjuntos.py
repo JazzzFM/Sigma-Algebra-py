@@ -4,7 +4,8 @@ import math
 import copy
 from tqdm import tqdm
 import time
- 
+from itertools import combinations
+
 # Operaciones con conjuntos
 
 def Union(lista_1, lista_2):
@@ -45,7 +46,6 @@ def Potencia_De(lista):
         resultado.extend([subset + [x] for subset in resultado])
     return resultado
 
-
 def Obtener_Complemento(lista, lista_elemento):
     if len(lista_elemento) == 0:
         return lista
@@ -64,13 +64,27 @@ def Esta_En(lista_1, lista_2):
             verdades.append(False)
     return any(verdades)
 
+def Sublists(lista):
+    resultado = []
+    for i in range(len(lista) + 1):
+        for j in range(i + 1, len(lista) + 1):
+            resultado.append(lista[i:j])
+    return resultado
+
+def Uniques(lista):
+    unicos = []
+    for element in lista:
+        if element not in unicos:
+            unicos.append(element)
+    return unicos
+
 # Criterios para sigma-álgebra
 
 def Vacio_Esta_En(lista):
     x = [True for elemento in lista if len(elemento) == 0]
     return any(x)
 
-def Criterio_Complemento(lista,n):
+def Criterio_Complemento(lista, n):
     lista_total = list(range(n))
     complementos = [Obtener_Complemento(lista_total, a) for a in lista]
     verdades = [Esta_En(c, lista) for c in complementos] 
@@ -111,23 +125,55 @@ def Es_SigmaAlgebra(lista, n):
 def Construir_SigmaAlgebras(n):
     conjunto_inicial = list(range(n))
     Potencia = Potencia_De(conjunto_inicial)
-    Potencia_De_Potencia = Potencia_De(Potencia) 
     SigmaAlgebras = []
-    #SigmaAlgebras = [j for j in Potencia_De_Potencia if Es_SigmaAlgebra(j, n) ]
+    infimo = []
+      
+    #############################
+      
+    infimo.append([])
+    infimo.append(conjunto_inicial)
+    
+    ##########################
+    # Cota inferior pues: {\empty, X} \subset F \subset \pow(X) 
+    
+    SigmaAlgebras.append(infimo)
+    
+    ########################
+    
+    Potencia_copy = copy.copy(Potencia)
+    Potencia_copy.remove(conjunto_inicial)
+    Potencia_copy.remove([])
+    
+    ###########################################
+    
+    lists = Sublists(Potencia_copy)
+    Subsets = Uniques(sum(lists, []))
+    
+    All_Comb = []
+    
+    for i in range(0, len(Subsets)+1):
+        All_Comb.append(list(combinations(Subsets, i)))
+    
+    Candidato = []
+                   
+    for i in tqdm(range(0, len(All_Comb)), desc = "Ejecutando…", ascii = False, ncols = 75):
+        for j in All_Comb[i]:
+            Candidato_copy = copy.copy(Candidato)
+            Candidato_copy.append([])
+            Candidato_copy.append(conjunto_inicial)
+            aux = list(j)
+            Candidato_copy = Candidato_copy + (aux)
+            if Es_SigmaAlgebra(Candidato_copy, n) and Candidato_copy != conjunto_inicial:
+                SigmaAlgebras.append(Candidato_copy)
 
-    for i in tqdm(range(0, len(Potencia_De_Potencia)), desc="Ejecutando…", ascii=False, ncols=75):
-        if Es_SigmaAlgebra(Potencia_De_Potencia[i], n):
-            SigmaAlgebras.append(Potencia_De_Potencia[i])
-    
-    print("Completo. \n")    
-    
+    print("Completo. \n") 
+              
     for i in tqdm(range(0, len(SigmaAlgebras)), desc="Ejecutando…", ascii=False, ncols=75):
-        print(SigmaAlgebras[i])    
-            
+        print(SigmaAlgebras[i]) 
+           
     print("Completo. \n") 
        
     print("El numero de sigma algebras son: ")
     print(len(SigmaAlgebras))
-    print("Cantidadd de elementos en el conjunto potencia del conjunto potencia:")
-    print(len(Potencia_De_Potencia))
+    
     return SigmaAlgebras
