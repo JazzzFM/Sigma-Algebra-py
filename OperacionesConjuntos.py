@@ -166,13 +166,7 @@ def Construir_SigmaAlgebras(n):
             if Es_SigmaAlgebra(Candidato_copy, n) and Candidato_copy != conjunto_inicial:
                 SigmaAlgebras.append(Candidato_copy)
 
-    print("Completo. \n") 
-              
-    for i in tqdm(range(0, len(SigmaAlgebras)), desc="Ejecutando…", ascii=False, ncols=75):
-        print(SigmaAlgebras[i]) 
-           
-    print("Completo. \n") 
-       
+    print("Completo. \n")        
     print("El numero de sigma algebras son: ")
     print(len(SigmaAlgebras))
     

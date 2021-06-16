@@ -12,11 +12,13 @@ if __name__== '__main__':
     input_a = int(input_a)
     print("\n")
 
-    inicio=time.time()    
-    a = Construir_SigmaAlgebras(input_a)
-    fin=time.time()
+    inicio = time.time()    
+    SigmaAlgebras = Construir_SigmaAlgebras(input_a)
+    fin = time.time()
     print("\n")
-    print("Tiempo de ejecucion:\n")
+    print("Tiempo de ejecucion: \n")
     print(fin-inicio)
     print("\n")
-    print(a)
+    
+    for i in tqdm(range(0, len(SigmaAlgebras)), desc="Imprimiendo …", ascii=False, ncols=75):
+        print(SigmaAlgebras[i])
